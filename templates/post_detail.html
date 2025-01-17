@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ post.title }} | Echoes</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+        html {
+            font-family: "Montserrat", sans-serif;
+            font-weight: 300;
+        }
+
+        body {
+            font-family: "Montserrat", sans-serif;
+            font-weight: 100;
+            margin: 0;
+            background: #0e0e0e;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2em;
+        }
+
+        .logo {
+            position: absolute;
+            top: 1em;
+            left: 1em;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: white;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 2em;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 5em;
+        }
+
+        .post-title {
+            font-weight: 700;
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+        }
+
+        .post-meta {
+            font-size: 1em;
+            color: #ccc;
+            margin-bottom: 1em;
+        }
+
+        .post-content {
+            font-size: 1.1em;
+            line-height: 1.6em;
+            margin-top: 1em;
+            margin-bottom: 2em;
+        }
+
+        .likes-section {
+            margin-top: 2em;
+            font-size: 1.2em;
+        }
+
+        .comment-section {
+            margin-top: 2em;
+            border-top: 1px solid #444;
+            padding-top: 1em;
+        }
+
+        .comment-section h3 {
+            font-size: 1.5em;
+            margin-bottom: 1em;
+        }
+
+        .comment {
+            margin-bottom: 1em;
+            padding: 0.5em;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .comment-author {
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .back-link {
+            margin-top: 20px;
+            font-size: 1em;
+            color: white;
+            text-decoration: none;
+            border: 1px solid white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .back-link:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">Echoes</div>
+    <div class="container">
+        <h1 class="post-title">{{ post.title }}</h1>
+        <div class="post-meta">
+            <span>by {{ post.author }}</span> &bull; 
+            <span>{{ post.date_posted|date:"F j, Y" }}</span>
+        </div>
+        <div class="post-content">{{ post.content|linebreaks }}</div>
+        
+        <div class="likes-section">
+            <span>Likes: {{ post.likes }}</span>
+            <button style="margin-left: 10px; background-color: #555; border: none; color: white; padding: 5px 10px; border-radius: 5px;">Like</button>
+        </div>
+
+        <div class="comment-section">
+            <h3>Comments:</h3>
+            {% for comment in comments %}
+                <div class="comment">
+                    <p class="comment-author">{{ comment.author }}:</p>
+                    <p>{{ comment.content }}</p>
+                </div>
+            {% empty %}
+                <p>No comments yet.</p>
+            {% endfor %}
+        </div>
+
+        <h3>Add a Comment:</h3>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" style="background-color: #555; border: none; color: white; padding: 5px 10px; border-radius: 5px;">Submit</button>
+        </form>
+
+        <a class="back-link" href="{% url 'feed' %}">&laquo; Back to Feed</a>
+    </div>
+</body>
+</html>
